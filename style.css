@@ -16,12 +16,14 @@ h1 {
     width: 320px;
     margin: 0 auto;
     border: 5px solid  #8BD8BD;;
-    /* background-color: #8BD8BD; */
     height: 565px;
     border-radius: 5px;
+    background-color:#8BD8BD;
 }
 
 #calculator-display {
+    overflow-y: auto;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -34,14 +36,14 @@ h1 {
     display: inline-grid;
     margin-top: 30px;
     background-color:#8BD8BD;
+    gap: 5px;
+    border: 5px solid #8BD8BD;
 }
 
 button {
     color:white;
-    margin: 2px;
-    width: 70px;
-    height: 70px;
-    border-radius: 1px;
+    width: 74px;
+    height: 71px;
     background-color:#243665;
     font-size: 19px;
     border: 0;
@@ -65,9 +67,9 @@ button:hover {
 }
 
 #clear {
-    width: 97%;
+    width: 100%;
     grid-column-start: 1;
-    grid-column-end: 3; 
+    grid-column-end: 3;
 }
 
 #seven {
@@ -87,7 +89,7 @@ button:hover {
 }
 
 #equals {
-    width: 97%;
+    width: 100%;
     grid-column-start: 3;
     grid-column-end: 5;
     grid-row-end: 6; 
