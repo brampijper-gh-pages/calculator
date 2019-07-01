@@ -14,12 +14,14 @@ buttonsArr.forEach(button => {
                 numArr.push(val); 
                 paragraph.textContent += `${val}`;
                 break;
+
             case "+": case "-": case "*": case "/":
                 if(isLastEntryAnInteger(numArr)) {
                     numArr.push(val);
                     paragraph.textContent += `${val}`
                 } else console.log('You cannot place multiple operators after each other!');
                 break;
+
             case "=":
                 if(numArr.length == 0) {
                     console.log('Please input a number first'); 
@@ -28,13 +30,30 @@ buttonsArr.forEach(button => {
                 } else if (!hasOperator(numArr)) {
                     console.log('You need to add an operator!');
                 } else {
-                    paragraph.textContent += `${val} `;
+                    paragraph.textContent += ` ${val} `;
                     calculateString(numArr)
                 }
                 break;
+
             case "clear":
                 numArr.length = 0;
-                paragraph.textContent = ''; 
+                paragraph.textContent = '';
+                break;
+
+            case "back":
+                if (numArr.length) numArr.pop()
+                paragraph.textContent = `${numArr.join('')}`;
+                break;
+
+            case ".":
+                if(numArr.length && isLastEntryAnInteger(numArr)) {
+                    numArr.push('.');
+                    paragraph.textContent += `${val}`;
+                    console.log(numArr)
+                } else {
+                    console.log('cannot add decimal!')
+                }
+                break;
             default:
                 break;
         }
