@@ -15,12 +15,22 @@ buttonsArr.forEach(button => {
                 paragraph.textContent += `${val}`;
                 break;
             case "+": case "-": case "*": case "/":
-                numArr.push(val);
-                paragraph.textContent += `${val}`;
+                if(isLastEntryAnInteger(numArr)) {
+                    numArr.push(val);
+                    paragraph.textContent += `${val}`
+                } else console.log('You cannot place multiple operators after each other!');
                 break;
             case "=":
-                paragraph.textContent += `${val} `;
-                calculateString(numArr)
+                if(numArr.length == 0) {
+                    console.log('Please input a number first'); 
+                } else if(!isLastEntryAnInteger(numArr)) {
+                    console.log('You cannot end with an operator!');
+                } else if (!hasOperator(numArr)) {
+                    console.log('You need to add an operator!');
+                } else {
+                    paragraph.textContent += `${val} `;
+                    calculateString(numArr)
+                }
                 break;
             case "clear":
                 numArr.length = 0;
@@ -33,9 +43,23 @@ buttonsArr.forEach(button => {
     })
 });
 
+function hasOperator(numArr) {
+    return numArr.some(function (item) {
+        return item == '+' || item == '-' || item == '/' || item == '*'
+    })
+}
+
+function isLastEntryAnInteger(numArr) {
+    if(parseInt(numArr[numArr.length-1]) == 0 && numArr[numArr.length-2] == '/') {
+        return false + console.log('Dividing by 0 is impossible'); 
+    } else if (parseInt(numArr[numArr.length-1]) == 0) {
+        return true;
+    } else return parseInt(numArr[numArr.length-1]);
+}
+
 function calculateString(numArr) {
     myString = numArr.join(''); 
     let total = new Function('return ' + myString)();
-    paragraph.textContent += `${total}`; 
+    paragraph.textContent += `${total =+ total.toFixed(2)}`; 
 
 }
