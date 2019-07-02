@@ -4,6 +4,7 @@ let numArr = [];
 
 const container = document.querySelector('#calculator-display');
 const feedbackMsg = document.querySelector('#feedback-message');
+const decimalBtn = document.querySelector("#decimal");
 
 const paragraph = document.createElement('p');
 paragraph.classList.add('content');
@@ -33,6 +34,7 @@ function useInputValue(val) {
             if(isLastEntryAnInteger(numArr)) {
                 numArr.push(val);
                 paragraph.textContent += `${val}`;
+                decimalBtn.disabled = false;
                 showUserFeedback('');
             } 
             else showUserFeedback('You cannot place multiple operators after each other!');
@@ -62,7 +64,7 @@ function useInputValue(val) {
             break;
 
         case "Backspace":
-            if (numArr.length) numArr.pop()
+            if (numArr.length) numArr.pop();
             paragraph.textContent = `${numArr.join('')}`;
             showUserFeedback('')
             break;
@@ -71,6 +73,7 @@ function useInputValue(val) {
             if(numArr.length && isLastEntryAnInteger(numArr)) {
                 numArr.push('.');
                 paragraph.textContent += `${val}`;
+                decimalBtn.disabled = true;
                 showUserFeedback('')
             }
             else {
@@ -84,7 +87,6 @@ function useInputValue(val) {
 
 function showUserFeedback(msg) {
     feedbackMsg.textContent = msg;
-
 }
 
 function hasOperator(numArr) {
@@ -104,5 +106,6 @@ function isLastEntryAnInteger(numArr) {
 function calculateString(numArr) {
     myString = numArr.join(''); 
     let total = new Function('return ' + myString)();
-    paragraph.textContent += `${total =+ total.toFixed(2)}`; 
+    paragraph.textContent += `${total =+ total.toFixed(2)}`;
+    // numArr =+ total.toString()
 }
