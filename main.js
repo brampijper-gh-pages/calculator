@@ -107,5 +107,5 @@ function calculateString(numArr) {
     myString = numArr.join(''); 
     let total = new Function('return ' + myString)();
     paragraph.textContent += `${total =+ total.toFixed(2)}`;
-    // numArr =+ total.toString()
+    numArr.push("=" + total)
 }
