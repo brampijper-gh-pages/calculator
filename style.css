@@ -36,14 +36,29 @@ h6 {
 
 #calculator-display {
     border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
     max-width: 100%;
     height: 150px;
     overflow-y: auto;
     overflow-x: hidden;
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+#calculator-display > p:first-child {
+    font-size: 12px;
+}
+
+.content {
+    display:flex;
+    justify-content: center;
+    word-break: break-all;
+    font-size: 20px;
+    color:#243665;
+}
+
+#history-message {
+    margin-top:15px;
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .button-holder {
@@ -69,12 +84,6 @@ button {
 button:hover {
     transition: 0.3s;
     opacity: 1;
-}
-
-.content {
-    word-break: break-all;
-    font-size: 20px;
-    color:#243665;
 }
 
 #backspace {
