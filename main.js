@@ -14,6 +14,7 @@ const paragraph = document.createElement('p');
 const historyP = document.createElement('p');
 paragraph.classList.add('content');
 historyP.classList.add('content');
+container.append(paragraph, historyP);
 
 document.addEventListener('keydown', (event) => {
     useInputValue(event.key);
@@ -41,14 +42,12 @@ function useInputValue(val) {
 
         // check if last number is integer, if so add operator
             if(isLastEntryAnInteger(myCalculation)) {
-                validateCalculation(myCalculation)
+                calculateString(myCalculation)
                 myNum = '';
                 myCalculation += val;
                 historyP.textContent = `${myCalculation}`;
                 container.append(historyP);
                 decimalBtn.disabled = false;
-
-
                 showUserFeedback('');
             } 
             else showUserFeedback('You cannot place multiple operators after each other!');
@@ -66,15 +65,16 @@ function useInputValue(val) {
                 showUserFeedback('You need to add an operator!');
             }
             else {
-                historyP.textContent = myCalculation;
-                // paragraph.textContent += "=";
-                console.log('my calculation is', myCalculation)
+                historyP.textContent = '';
                 calculateString(myCalculation)
+                myCalculation = calculateString(myCalculation).toString();
                 showUserFeedback('')
             }
             break;
 
         case "clear": case "Delete":
+            console.log('Running')
+            myNum = '';
             myCalculation = '';
             historyP.textContent = '';
             paragraph.textContent = '';
@@ -83,8 +83,8 @@ function useInputValue(val) {
 
         case "Backspace":
             myCalculation = myCalculation.substring(0, myCalculation.length-1);
+            if(!myCalculation.length) { myNum = ''; }
             paragraph.textContent = `${myCalculation}`;
-
             showUserFeedback('')
             break;
 
@@ -104,14 +104,6 @@ function useInputValue(val) {
     }
 }
 
-function validateCalculation(calc) {
-        // historyP.textContent = calc;
-        // paragraph.textContent += "=";
-        console.log(calculateString(calc));
-        showUserFeedback('')
-        return true;
-}
-
 function showUserFeedback(msg) {
     feedbackMsg.textContent = msg;
 }
@@ -128,22 +120,21 @@ function hasOperator(numArr) {
 }
 
 function isLastEntryAnInteger(myCalc) {
-    if(myCalc.endsWith('0') == 0 && myCalc.charAt(myCalc.length - 2) == '/') {
+    console.log(myCalc)
+    if(myCalc.endsWith('0') && myCalc.charAt(myCalc.length - 2) == '/') {
         return false + showUserFeedback('Dividing by 0 is impossible'); 
     } else return true;
 }
 
 function calculateString(numArr) {
-    console.log(numArr)
     let total = new Function('return ' + numArr)();
-    console.log(total)
     paragraph.textContent = `${total =+ total.toFixed(2)}`;
-    // numArr.push("=" + total)
+    return total; 
 }
 
 /*
 Make the calculator like the the calc on windows. 
-- there is something wrong with hasoperator function
 - Show history btn.
 - dividing and multiply is not working properly (with chaning calculations)
+- its not dividing or multiplying bcause its dividing the last entry of the integers instead of the outcome. 
 */
