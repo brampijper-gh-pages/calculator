@@ -1,8 +1,7 @@
 const buttons = document.querySelectorAll('button');
 const buttonsArr = Array.from(buttons);
-let myNum = ''; 
-let numArr = '';
 let myCalculation = '';
+let myNum = '';
 
 const container = document.querySelector('#calculator-display');
 const feedbackMsg = document.querySelector('#feedback-message');
@@ -34,7 +33,7 @@ function useInputValue(val) {
         case "0": case "1": case "2": case "3": case "4": case "5": case "6": case "7": case "8": case "9":
             myNum += val;
             myCalculation += val;
-            paragraph.textContent = myNum;
+            paragraph.textContent = myCalculation;
             showUserFeedback('');
             break;
 
@@ -42,10 +41,10 @@ function useInputValue(val) {
 
         // check if last number is integer, if so add operator
             if(isLastEntryAnInteger(myCalculation)) {
-                calculateString(myCalculation)
                 myNum = '';
+                calculateString(myCalculation);
                 myCalculation += val;
-                historyP.textContent = `${myCalculation}`;
+                historyP.textContent = myCalculation;
                 container.append(historyP);
                 decimalBtn.disabled = false;
                 showUserFeedback('');
@@ -54,12 +53,10 @@ function useInputValue(val) {
             break;
 
         case "=": case "Enter":
-                console.log(hasOperator('this is ', myCalculation))
             if(myCalculation ==  '') {
                 showUserFeedback('Please input a number first'); 
             }
             else if(!isLastEntryAnInteger(myCalculation)) {
-                showUserFeedback('You cannot end with an operator!');
             }
             else if (!hasOperator(myCalculation)) {
                 showUserFeedback('You need to add an operator!');
@@ -73,27 +70,33 @@ function useInputValue(val) {
             break;
 
         case "clear": case "Delete":
-            console.log('Running')
-            myNum = '';
-            myCalculation = '';
-            historyP.textContent = '';
-            paragraph.textContent = '';
+            myCalculation = historyP.textContent = paragraph.textContent = '';
+            decimalBtn.disabled = false;
             showUserFeedback('')
             break;
-
+ 
         case "Backspace":
-            myCalculation = myCalculation.substring(0, myCalculation.length-1);
-            if(!myCalculation.length) { myNum = ''; }
-            paragraph.textContent = `${myCalculation}`;
+            myCalculation = myCalculation.substring(0, myCalculation.length-1)
+            myNum = myNum.substring(0, myNum.length-1)
+
+
+            historyP.textContent = myCalculation;
+            paragraph.textContent = myCalculation;
+            decimalBtn.disabled = false;
             showUserFeedback('')
             break;
 
         case ".":
-            if(numArr.length && isLastEntryAnInteger(numArr)) {
-                numArr.push('.');
-                paragraph.textContent += `${val}`;
-                decimalBtn.disabled = true;
-                showUserFeedback('')
+            if(myCalculation.length && isLastEntryAnInteger(myCalculation)) {
+                if(!alreadyHasDecimal(myNum)) {
+                    myCalculation += val; 
+                    myNum += val;
+                    paragraph.textContent = myCalculation;
+                    container.append(paragraph)
+                    decimalBtn.disabled = true;
+                    showUserFeedback('')
+                } else showUserFeedback('cannot add decimal!');
+
             }
             else {
                 showUserFeedback('cannot add decimal!')
@@ -104,26 +107,50 @@ function useInputValue(val) {
     }
 }
 
+function alreadyHasDecimal(myString) {
+    const decimalArr = ['.'];
+    let test = 0;
+    decimalArr.forEach(function(decimal) {
+        if(myString.includes(decimal)) {
+            test = 1; 
+        }
+    })
+    return test;
+}
+
 function showUserFeedback(msg) {
     feedbackMsg.textContent = msg;
 }
 
 function hasOperator(numArr) {
     const operatorArr = ['+', '-', '/', '*'];
+    let myNum = 0;
     operatorArr.forEach(function(word){
         if (numArr.includes(word)) {
-            return true;
+            myNum = 1; 
         }
-        return true;
     })
-    return true;
+    return myNum
 }
 
 function isLastEntryAnInteger(myCalc) {
-    console.log(myCalc)
-    if(myCalc.endsWith('0') && myCalc.charAt(myCalc.length - 2) == '/') {
+
+    if (myCalc === '') {
+        return false + showUserFeedback('Please add a number first');
+    }
+    else if (myCalc.endsWith('/') || myCalc.endsWith('*') || myCalc.endsWith('-') || myCalc.endsWith('+')) {
+        return false + showUserFeedback('You cannot end with an operator!');
+    }
+
+    else if(myCalc.endsWith('0') && myCalc.charAt(myCalc.length - 2) == '/') {
         return false + showUserFeedback('Dividing by 0 is impossible'); 
-    } else return true;
+    }
+
+    else if(myCalc.endsWith('.')) {
+        return false;
+    }
+    
+    else return true;
 }
 
 function calculateString(numArr) {
@@ -131,10 +158,3 @@ function calculateString(numArr) {
     paragraph.textContent = `${total =+ total.toFixed(2)}`;
     return total; 
 }
-
-/*
-Make the calculator like the the calc on windows. 
-- Show history btn.
-- dividing and multiply is not working properly (with chaning calculations)
-- its not dividing or multiplying bcause its dividing the last entry of the integers instead of the outcome. 
-*/
