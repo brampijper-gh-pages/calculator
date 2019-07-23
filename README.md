@@ -1,2 +1,2 @@
-A Challenge from [`The Odin Project`](https://www.theodinproject.com/about?ref=homenav).
+A Challenge from <a href="https://www.theodinproject.com/about?ref=homenav"> The Odin Project </a>.
 Build a functional calculator with Javascript.
