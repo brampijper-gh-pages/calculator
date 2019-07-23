@@ -1,3 +1,2 @@
-# calculator
-
-One of `The Odin Project` challenges. Build a calculator with Javascript.
+A Challenge from [`The Odin Project`](https://www.theodinproject.com/about?ref=homenav).
+Build a functional calculator with Javascript.
